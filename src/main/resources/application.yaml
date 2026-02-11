@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: search
+
+open-search:
+  protocol: http
+  host: localhost
+  port: 9200
+
+logging:
+  level:
+    org.example: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%level] - %msg%n"
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method

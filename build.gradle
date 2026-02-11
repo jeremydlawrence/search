@@ -1,0 +1,44 @@
+plugins {
+	id 'java'
+	alias(libs.plugins.spring.boot)
+	alias(libs.plugins.dependency.management)
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Search project for Spring Boot'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation libs.spring.boot.starter.web
+	implementation libs.springdoc.openapi.starter.webmvc
+	implementation libs.opensearch.java
+	implementation libs.httpclient5
+
+	compileOnly libs.lombok
+	annotationProcessor libs.lombok
+
+	testImplementation libs.spring.boot.starter.test
+	testRuntimeOnly libs.junit.platform.launcher
+	testCompileOnly libs.lombok
+	testAnnotationProcessor libs.lombok
+}
+
+test {
+	useJUnitPlatform()
+}
