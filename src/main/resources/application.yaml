@@ -9,6 +9,8 @@ open-search:
   protocol: http
   host: localhost
   port: 9200
+  product:
+    index-name: products
 
 logging:
   level:
