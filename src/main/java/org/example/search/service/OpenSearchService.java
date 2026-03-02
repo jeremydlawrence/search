@@ -1,5 +1,6 @@
 package org.example.search.service;
 
+import org.example.search.dto.QueryOperator;
 import org.example.search.dto.QueryType;
 import org.example.search.dto.SearchResult;
 import org.example.search.dto.SearchSpec;
@@ -47,13 +48,29 @@ public class OpenSearchService implements SearchService {
         final BoolQuery.Builder finalQuery = new BoolQuery.Builder();
 
         searchSpec.getFilters().forEach(filter -> {
+            final Operator operator = QueryOperator.AND.equals(filter.getQueryOperator())
+                    ? Operator.And
+                    : null;
+            final Float boost = filter.getBoost() != null
+                    ? filter.getBoost()
+                    : 1.0f;
+
             // Collect scored queries
-            if (filter.getQueryType().equals(QueryType.MATCH)) {
+            if (filter.getQueryType().equals(QueryType.MUST_MATCH)) {
                 finalQuery.must(m -> m.match(
                         mq -> mq
                                 .field(filter.getFieldName())
                                 .query(getFieldValue(filter.getFieldValue()))
-                                .operator(Operator.And)
+                                .operator(operator)
+                ));
+            }
+            if (filter.getQueryType().equals(QueryType.SHOULD_MATCH)) {
+                finalQuery.should(m -> m.match(
+                        mq -> mq
+                                .field(filter.getFieldName())
+                                .query(getFieldValue(filter.getFieldValue()))
+                                .operator(operator)
+                                .boost(boost)
                 ));
             }
 

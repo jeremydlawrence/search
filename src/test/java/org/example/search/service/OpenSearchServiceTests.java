@@ -68,7 +68,7 @@ class OpenSearchServiceTests {
         SearchFilter filter = SearchFilter.builder()
                 .fieldName("title")
                 .fieldValue("test")
-                .queryType(QueryType.MATCH)
+                .queryType(QueryType.MUST_MATCH)
                 .build();
 
         SearchSpec searchSpec = SearchSpec.builder()
@@ -101,7 +101,7 @@ class OpenSearchServiceTests {
         SearchFilter filter = SearchFilter.builder()
                 .fieldName("title")
                 .fieldValue("jacket")
-                .queryType(QueryType.MATCH)
+                .queryType(QueryType.MUST_MATCH)
                 .build();
 
         SearchSpec searchSpec = SearchSpec.builder()
@@ -160,7 +160,7 @@ class OpenSearchServiceTests {
         SearchFilter matchFilter = SearchFilter.builder()
                 .fieldName("title")
                 .fieldValue("shoes")
-                .queryType(QueryType.MATCH)
+                .queryType(QueryType.MUST_MATCH)
                 .build();
 
         SearchFilter termFilter = SearchFilter.builder()
@@ -195,7 +195,7 @@ class OpenSearchServiceTests {
         SearchFilter filter = SearchFilter.builder()
                 .fieldName("title")
                 .fieldValue("nonexistent")
-                .queryType(QueryType.MATCH)
+                .queryType(QueryType.MUST_MATCH)
                 .build();
 
         SearchSpec searchSpec = SearchSpec.builder()
@@ -225,7 +225,7 @@ class OpenSearchServiceTests {
         SearchFilter filter = SearchFilter.builder()
                 .fieldName("title")
                 .fieldValue("test")
-                .queryType(QueryType.MATCH)
+                .queryType(QueryType.MUST_MATCH)
                 .build();
 
         SearchSpec searchSpec = SearchSpec.builder()
