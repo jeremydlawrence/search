@@ -3,6 +3,7 @@ package org.example.search.controller;
 import org.example.search.dto.SearchResult;
 import org.example.search.model.Product;
 import org.example.search.service.OpenSearchService;
+import org.example.search.util.ProductSearchFormer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,11 +29,11 @@ class SearchControllerTests {
     private OpenSearchService openSearchService;
 
     private SearchController searchController;
+    private final ProductSearchFormer productSearchFormer = new ProductSearchFormer("test");
 
     @BeforeEach
     void setUp() {
-        searchController = new SearchController(openSearchService);
-        ReflectionTestUtils.setField(searchController, "productIndexName", "products");
+        searchController = new SearchController(openSearchService, productSearchFormer);
     }
 
     @Test
@@ -65,7 +65,7 @@ class SearchControllerTests {
         product.setId("1");
         product.setTitle("Test Product");
         product.setPrice(BigDecimal.valueOf(99.99));
-        SearchResult searchResult = SearchResult.<Product>builder()
+        SearchResult<Product> searchResult = SearchResult.<Product>builder()
                 .results(List.of(product))
                 .total(1L)
                 .start(from)

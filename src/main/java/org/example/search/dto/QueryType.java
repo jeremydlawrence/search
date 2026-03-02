@@ -1,6 +1,7 @@
 package org.example.search.dto;
 
 public enum QueryType {
-    MATCH,
+    MUST_MATCH,
+    SHOULD_MATCH,
     TERM
 }
