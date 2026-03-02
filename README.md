@@ -1,6 +1,7 @@
 # Search Service
 
-A Spring Boot 4.0.2 application with Java 25 that provides search functionality using OpenSearch.
+A Spring Boot 4.0.2 application with Java 25 that provides search functionality via REST APIs. The goal of this
+project is to use OpenSearch for various search practice projects.
 
 ## Features
 
@@ -28,7 +29,11 @@ A Spring Boot 4.0.2 application with Java 25 that provides search functionality 
 ./gradlew bootRun
 ```
 
-The application runs on port 8081 by default.
+The application runs on port 8081 by default. Or specify a port in `src/main/resources/application.yml`:
+```yaml
+server:
+  port: 8081
+```
 
 ## Configuration
 
@@ -94,13 +99,13 @@ Run specific test class:
 src/
 ├── main/
 │   ├── java/org/example/search/
-│   │   ├── config/         # Configuration classes
+│   │   ├── config/          # Configuration classes
 │   │   ├── controller/      # REST controllers
 │   │   ├── dto/             # Data transfer objects
 │   │   ├── model/           # Domain models
-│   │   └── service/        # Business logic
+│   │   └── service/         # Business logic
 │   └── resources/
 │       └── application.yaml # Application configuration
 └── test/
-    └── java/               # Test classes
+    └── java/                # Test classes
 ```
