@@ -12,6 +12,7 @@ public class SearchSpec {
     private String pipeline;
     private int from;
     private int size;
+    @Builder.Default
     private boolean hybrid = false;
     private List<SearchFilter> filters;
     private SortSpec sort;
