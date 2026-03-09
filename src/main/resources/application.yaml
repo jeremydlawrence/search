@@ -12,6 +12,13 @@ open-search:
   product:
     index-name: products
 
+embedding:
+  protocol: http
+  host: localhost
+  port: 8000
+  path: embed
+  char-limit: 2500
+
 logging:
   level:
     org.example: DEBUG

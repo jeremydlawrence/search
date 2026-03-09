@@ -82,6 +82,21 @@ The project uses Gradle via the wrapper (`./gradlew` on Unix, `gradlew.bat` on W
 - Use `@SpringBootTest` for integration tests
 - Test class naming: `ClassNameTests` or `ClassNameIT`
 - Test method naming: `methodName_shouldDoX()` or `testMethodName()`
+- **Use parameterized tests** when testing multiple input combinations:
+  - Use `@ParameterizedTest` with `@CsvSource` for multiple input values
+  - Use separate `@Test` methods for cases that are difficult to parameterize (e.g., complex setup, edge cases)
+  - Example:
+    ```java
+    @ParameterizedTest
+    @CsvSource({
+        "null, 0",
+        "-1, 0",
+        "10, 10"
+    })
+    void validateFrom_shouldReturnCorrectValue(String input, int expected) {
+        // test implementation
+    }
+    ```
 
 ### Configuration
 - Use `@ConfigurationProperties` for type-safe configuration binding
