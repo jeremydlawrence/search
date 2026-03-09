@@ -2,6 +2,7 @@ package org.example.search.controller;
 
 import org.example.search.dto.SearchResult;
 import org.example.search.model.Product;
+import org.example.search.service.EmbeddingService;
 import org.example.search.service.OpenSearchService;
 import org.example.search.util.ProductSearchFormer;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,8 +29,11 @@ class SearchControllerTests {
     @Mock
     private OpenSearchService openSearchService;
 
+    @Mock
+    private EmbeddingService embeddingService;
+
     private SearchController searchController;
-    private final ProductSearchFormer productSearchFormer = new ProductSearchFormer("test");
+    private final ProductSearchFormer productSearchFormer = new ProductSearchFormer("test", embeddingService);
 
     @BeforeEach
     void setUp() {
@@ -73,7 +77,7 @@ class SearchControllerTests {
                 .build();
 
         when(openSearchService.search(any(), eq(Product.class))).thenReturn(searchResult);
-        String result = searchController.search(from, size, query, brand, category);
+        String result = searchController.search(from, size, "relevancy", query, brand, category, List.of("id", "title"));
         assertNotNull(result);
     }
 }

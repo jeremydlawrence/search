@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.search.dto.SearchSpec;
+import org.example.search.dto.SortType;
 import org.example.search.model.Product;
 import org.example.search.service.OpenSearchService;
 import org.example.search.util.ProductSearchFormer;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class SearchController {
@@ -51,11 +53,14 @@ public class SearchController {
     public String search(
             @RequestParam(defaultValue = "0") Integer from,
             @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "relevance") String sort,
             @RequestParam String query,
             @RequestParam(required = false) String brand,
-            @RequestParam(required = false) String category) {
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "id,title") List<String> fields) {
         try {
-            final SearchSpec searchSpec = productSearchFormer.formSearch(query, from, size, brand, category);
+            final SearchSpec searchSpec = productSearchFormer.formSearch(
+                    query, from, size, brand, category, SortType.fromValue(sort), fields);
             return objectMapper.writeValueAsString(openSearchService.search(searchSpec, Product.class));
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
