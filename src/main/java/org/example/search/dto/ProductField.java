@@ -7,7 +7,9 @@ public enum ProductField {
     TITLE("title"),
     DESCRIPTION("description"),
     BRAND("brand"),
+    BRAND_KEYWORD("brand.keyword"),
     CATEGORY("category"),
+    CATEGORY_KEYWORD("category.keyword"),
     PRICE("price"),
     IMAGE("image");
 

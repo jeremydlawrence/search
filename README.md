@@ -46,6 +46,13 @@ open-search:
   port: 9200
   product:
     index-name: products
+
+embedding:
+  protocol: http
+  host: localhost
+  port: 8000
+  path: embed
+  char-limit: 2500
 ```
 
 ## API Endpoints
@@ -61,19 +68,21 @@ Returns the OpenSearch cluster health status.
 ### Product Search
 
 ```
-GET /v1/product/search?query=<query>&from=0&size=10&brand=<brand>&category=<category>
+GET /v1/product/search?query=<query>&from=0&size=10&sort=<sort>&brand=<brand>&category=<category>&fields=<fields>
 ```
 
 **Parameters:**
 - `query` (required) - Search query string
 - `from` (optional, default: 0) - Pagination offset
 - `size` (optional, default: 10) - Number of results
+- `sort` (optional, default: relevance) - Sort type: relevance, lexical, semantic, hybrid, price_asc, price_desc
 - `brand` (optional) - Filter by brand
 - `category` (optional) - Filter by category
+- `fields` (optional, default: id,title) - Comma-separated list of fields to return
 
 **Example:**
 ```
-GET /v1/product/search?query=jacket&brand=Nike&size=5
+GET /v1/product/search?query=jacket&brand=Nike&size=5&sort=relevance&fields=id,title,price
 ```
 
 ## Documentation
@@ -103,7 +112,8 @@ src/
 │   │   ├── controller/      # REST controllers
 │   │   ├── dto/             # Data transfer objects
 │   │   ├── model/           # Domain models
-│   │   └── service/         # Business logic
+│   │   ├── service/         # Business logic
+│   │   └── util/            # Utility classes
 │   └── resources/
 │       └── application.yaml # Application configuration
 └── test/

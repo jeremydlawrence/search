@@ -178,4 +178,28 @@ class ProductSearchFormerTests {
 
         assertNull(result.getPipeline());
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "hello world, hello world",
+            "hello   world, hello world",
+            "one two three, one two three",
+            "one  two   three, one two three"
+    })
+    void buildRequestBody_collapseWhitespaceTest(String input, String expected) {
+
+        assertEquals(expected, ProductSearchFormer.collapseWhitespace(input));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Blue Shirt, blue shirt",
+            "Blue  Shirt, blue shirt",
+            " Blue  Shirt, blue shirt",
+            "  Blue     Shirt , blue shirt"
+    })
+    void buildRequestBody_normalizeQueryTest(String input, String expected) {
+
+        assertEquals(expected, ProductSearchFormer.normalizeQuery(input));
+    }
 }
