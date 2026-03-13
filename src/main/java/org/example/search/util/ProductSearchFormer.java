@@ -41,6 +41,7 @@ public class ProductSearchFormer {
             final String category,
             final SortType sortType,
             final List<String> fields) {
+        final String normalizedQuery = normalizeQuery(query);
         final List<SearchFilter> filters = new ArrayList<>();
         final SortSpec.SortSpecBuilder sortSpec = SortSpec.builder();
         final SearchSpec.SearchSpecBuilder searchSpec = SearchSpec.builder()
@@ -52,11 +53,11 @@ public class ProductSearchFormer {
         // Query string based recall
         final SearchFilter.SearchFilterBuilder lexicalFtsBuilder = SearchFilter.builder()
                 .fieldName(ProductField.FTS.value())
-                .fieldValue(query)
+                .fieldValue(normalizedQuery)
                 .queryOperator(QueryOperator.AND);
         final SearchFilter.SearchFilterBuilder titleBoostBuilder = SearchFilter.builder()
                 .fieldName(ProductField.TITLE.value())
-                .fieldValue(query)
+                .fieldValue(normalizedQuery)
                 .queryType(QueryType.SHOULD_MATCH)
                 .boost(3.0f);
         switch (sortType) {
@@ -68,7 +69,7 @@ public class ProductSearchFormer {
                 sortSpec.sort(Pair.of("_score", "desc"));
             }
             case SEMANTIC -> {
-                final List<Float> queryVectors = embeddingService.getEmbeddings(List.of(query)).getFirst();
+                final List<Float> queryVectors = embeddingService.getEmbeddings(List.of(normalizedQuery)).getFirst();
                 filters.add(SearchFilter.builder()
                         .fieldName(ProductField.FTS_EMBEDDING.value())
                         .fieldValue(queryVectors)
@@ -88,7 +89,7 @@ public class ProductSearchFormer {
                 filters.add(titleBoostBuilder.build());
 
                 // vector match
-                final List<Float> queryVectors = embeddingService.getEmbeddings(List.of(query)).getFirst();
+                final List<Float> queryVectors = embeddingService.getEmbeddings(List.of(normalizedQuery)).getFirst();
                 filters.add(SearchFilter.builder()
                         .fieldName(ProductField.FTS_EMBEDDING.value())
                         .fieldValue(queryVectors)
@@ -108,14 +109,14 @@ public class ProductSearchFormer {
         // Field based filters
         if (brand != null) {
             filters.add(SearchFilter.builder()
-                    .fieldName(ProductField.BRAND.value())
+                    .fieldName(ProductField.BRAND_KEYWORD.value())
                     .fieldValue(brand)
                     .queryType(QueryType.FILTER_TERM)
                     .build());
         }
         if (category != null) {
             filters.add(SearchFilter.builder()
-                    .fieldName(ProductField.CATEGORY.value())
+                    .fieldName(ProductField.CATEGORY_KEYWORD.value())
                     .fieldValue(category)
                     .queryType(QueryType.FILTER_TERM)
                     .build());
@@ -154,5 +155,37 @@ public class ProductSearchFormer {
                 .toList();
 
         return validFields.isEmpty() ? List.of("id") : validFields;
+    }
+
+    protected static String normalizeQuery(final String query) {
+        if (query == null || query.isEmpty()) {
+            return query;
+        }
+
+        return collapseWhitespace(query.trim().toLowerCase());
+    }
+
+    protected static String collapseWhitespace(String str) {
+        if (str == null || str.isEmpty()) return str;
+
+        StringBuilder sb = new StringBuilder(str.length());
+        boolean lastWasWhitespace = false;
+
+        // Trim manually or call str.trim() first if needed
+        String trimmed = str.trim();
+
+        for (int i = 0; i < trimmed.length(); i++) {
+            char c = trimmed.charAt(i);
+            if (Character.isWhitespace(c)) {
+                if (!lastWasWhitespace) {
+                    sb.append(' ');
+                    lastWasWhitespace = true;
+                }
+            } else {
+                sb.append(c);
+                lastWasWhitespace = false;
+            }
+        }
+        return sb.toString();
     }
 }

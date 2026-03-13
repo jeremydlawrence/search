@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
 	implementation libs.spring.boot.starter.web
+	implementation libs.caffeine
 	implementation libs.springdoc.openapi.starter.webmvc
 	implementation libs.opensearch.java
 	implementation libs.httpclient5
