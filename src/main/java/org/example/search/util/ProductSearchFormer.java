@@ -128,17 +128,17 @@ public class ProductSearchFormer {
                 .build();
     }
 
-    protected Integer validateFrom(final Integer from) {
+    protected static Integer validateFrom(final Integer from) {
         final boolean isValid = from != null && from >= FROM_DEFAULT;
         return isValid ? from : FROM_DEFAULT;
     }
 
-    protected Integer validateSize(final Integer size) {
+    protected static Integer validateSize(final Integer size) {
         final boolean isValid = size != null && size > 0;
         return isValid ? size : SIZE_DEFAULT;
     }
 
-    protected List<String> validateFields(final List<String> fields) {
+    protected static List<String> validateFields(final List<String> fields) {
         if (fields == null || fields.isEmpty()) {
             return List.of("id");
         }
