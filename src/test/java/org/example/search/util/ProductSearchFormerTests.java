@@ -44,7 +44,7 @@ class ProductSearchFormerTests {
     })
     void validateFrom_shouldReturnCorrectValue(String input, int expected) {
         Integer value = "null".equals(input) ? null : Integer.parseInt(input);
-        Integer result = productSearchFormer.validateFrom(value);
+        Integer result = ProductSearchFormer.validateFrom(value);
         assertEquals(expected, result);
     }
 
@@ -59,7 +59,7 @@ class ProductSearchFormerTests {
     })
     void validateSize_shouldReturnCorrectValue(String input, int expected) {
         Integer value = "null".equals(input) ? null : Integer.parseInt(input);
-        Integer result = productSearchFormer.validateSize(value);
+        Integer result = ProductSearchFormer.validateSize(value);
         assertEquals(expected, result);
     }
 
@@ -70,21 +70,21 @@ class ProductSearchFormerTests {
     })
     void validateFields_shouldReturnIdWhenNullOrEmpty(String input) {
         List<String> fields = "null".equals(input) ? null : List.of();
-        List<String> result = productSearchFormer.validateFields(fields);
+        List<String> result = ProductSearchFormer.validateFields(fields);
         assertEquals(List.of("id"), result);
     }
 
     @Test
     void validateFields_shouldReturnIdWhenOnlyInvalidFields() {
         List<String> fields = List.of("invalid", "also_invalid");
-        List<String> result = productSearchFormer.validateFields(fields);
+        List<String> result = ProductSearchFormer.validateFields(fields);
         assertEquals(List.of("id"), result);
     }
 
     @Test
     void validateFields_shouldFilterInvalidFields() {
         List<String> fields = List.of("id", "invalid", "title");
-        List<String> result = productSearchFormer.validateFields(fields);
+        List<String> result = ProductSearchFormer.validateFields(fields);
         assertEquals(2, result.size());
         assertTrue(result.contains("id"));
         assertTrue(result.contains("title"));
@@ -93,7 +93,7 @@ class ProductSearchFormerTests {
     @Test
     void validateFields_shouldReturnAllValidFields() {
         List<String> fields = List.of("id", "title", "brand", "price");
-        List<String> result = productSearchFormer.validateFields(fields);
+        List<String> result = ProductSearchFormer.validateFields(fields);
         assertEquals(4, result.size());
     }
 

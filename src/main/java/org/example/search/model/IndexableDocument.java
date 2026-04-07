@@ -13,4 +13,6 @@ public interface IndexableDocument {
      * @return the unique document identifier
      */
     String getId();
+    Double getScore();
+    void setScore(Double score);
 }

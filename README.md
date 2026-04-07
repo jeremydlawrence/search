@@ -112,7 +112,7 @@ src/
 │   │   ├── controller/      # REST controllers
 │   │   ├── dto/             # Data transfer objects
 │   │   ├── model/           # Domain models
-│   │   ├── service/         # Business logic
+│   │   ├── service/         # Service classes
 │   │   └── util/            # Utility classes
 │   └── resources/
 │       └── application.yaml # Application configuration

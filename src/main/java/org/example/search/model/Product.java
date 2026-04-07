@@ -18,4 +18,5 @@ public class Product implements IndexableDocument {
     private List<String> category;
     private BigDecimal price;
     private List<String> image;
+    private Double score;
 }

@@ -94,6 +94,15 @@ public class OpenSearchService implements SearchService {
         final long roundTripTime = System.currentTimeMillis() - start;
         logger.info("Search took: {}ms", result.took());
 
+        // Hydrate results objects
+        result.hits().hits().forEach(hit -> {
+            // Populate score value
+            T doc = hit.source();
+            if (doc != null) {
+                doc.setScore(hit.score());
+            }
+        });
+
         // Compile response object
         return SearchResult.<T>builder()
                 .start(searchSpec.getFrom())
